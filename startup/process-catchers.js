@@ -1,11 +1,15 @@
+//
+//this module was replaced by built in exception-handler and logger of winston
+//
+
 const { logger } = require("./logger");
 
 module.exports = function () {
-  //TO CATCH ANY ERRORS AFTER THIS FILE IS LOADED IN INDEX.JS
+  //TO CATCH ANY ERRORS DURING EXECUTION (AFTER THIS FILE IS LOADED IN INDEX.JS)
 
   process.on("uncaughtException", (ex) => {
     logger.error(ex.message, ex);
-    console.error(ex); //for dev only. Coz even before logger logs to console, process exits
+    console.error(ex); //Even before logger logs to console, process exits hence use console.error() instead
 
     process.exit(1); // best practice to exit with non-zero exit code in error-situations
   });

@@ -1,6 +1,6 @@
-del process-catchers and use winston
-  Exiting the process in process-catcher.js exits even before logger logs to mongodb. See if winston-catchers do same?
+universal winston rejection handler in index.js
 
 issue for mongodb dep warning or see if you can create custom transport with new engine enabled
 
-universal winston rejection handler in index.js
+---
+uncomment mongodb trp in logger.exception.handler

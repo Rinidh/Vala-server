@@ -50,9 +50,23 @@ const logger = createLogger({
   ],
 });
 
-logger.info("infoMsg", { metP: "metV" });
-logger.error("errorMsg", { metP: "metV" });
-logger.warn("warnMsg", { metP: "metV" });
+//exception handling
+const transportsForExceptions = () => {
+  if (process.env.NODE_ENV === "production") {
+    return [
+      new transports.MongoDB({
+        db: "mongodb://127.0.0.1:27017/Vala-server",
+        collection: "log-exceptions",
+        level: "info",
+        format: format.combine(insertMetaForWinstonMongo(), uncolorizedFormat),
+      }),
+      new transports.File({ filename: "exceptions.log" }),
+    ];
+  } else if (process.env.NODE_ENV === "development") {
+    return [new transports.Console({ format: format.colorize() })];
+  }
+};
+logger.exceptions.handle(...transportsForExceptions());
 
 //uncomment afterwards
 // if(process.env.NODE_ENV === "production") {
