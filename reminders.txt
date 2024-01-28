@@ -1,6 +1,2 @@
-universal winston rejection handler in index.js
-
-issue for mongodb dep warning or see if you can create custom transport with new engine enabled
-
 ---
-uncomment mongodb trp in logger.exception.handler
+add the mongodb api key in production.json

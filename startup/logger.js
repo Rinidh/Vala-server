@@ -34,10 +34,10 @@ const logger = createLogger({
   format: uncolorizedFormat,
   transports: [
     new transports.File({
-      filename: "onlyError.log",
+      filename: "onlyErrors.log",
       level: "error", //only error messages go here
     }),
-    new transports.File({ filename: "infoAndHigher.log" }), //all logs go here
+    new transports.File({ filename: "allLogs.log" }), //level info and higher, up to error
     new transports.Console({
       format: colorizedFormat,
     }),
@@ -45,37 +45,33 @@ const logger = createLogger({
       db: "mongodb://127.0.0.1:27017/Vala-server",
       collection: "log",
       level: "info",
+      options: { useUnifiedTopology: true },
       format: format.combine(insertMetaForWinstonMongo(), uncolorizedFormat),
     }),
   ],
 });
 
 //exception handling
-const transportsForExceptions = () => {
+const transportsForErrorLogs = () => {
   if (process.env.NODE_ENV === "production") {
     return [
       new transports.MongoDB({
         db: "mongodb://127.0.0.1:27017/Vala-server",
-        collection: "log-exceptions",
+        collection: "log-ex-rej",
         level: "info",
+        options: { useUnifiedTopology: true },
         format: format.combine(insertMetaForWinstonMongo(), uncolorizedFormat),
       }),
-      new transports.File({ filename: "exceptions.log" }),
+      new transports.File({
+        filename: "ex-rej.log",
+      }),
     ];
   } else if (process.env.NODE_ENV === "development") {
-    return [new transports.Console({ format: format.colorize() })];
+    return [new transports.Console({ format: format.colorize() })]; //colorize not working for built in exceptions-logger
   }
 };
-logger.exceptions.handle(...transportsForExceptions());
 
-//uncomment afterwards
-// if(process.env.NODE_ENV === "production") {
-//   logger.add(
-//     new transports.MongoDB({
-//       db: "mongodb://127.0.0.1:27017/Vala-server",
-//       collection: "log"
-//     })
-//   )
-// }
+logger.exceptions.handle(...transportsForErrorLogs()); //these are the built in exception and rejection catchers
+logger.rejections.handle(...transportsForErrorLogs());
 
 module.exports.logger = logger;

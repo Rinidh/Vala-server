@@ -12,6 +12,7 @@ require("./startup/routes");
 require("./startup/prod")(app);
 
 console.log(process.env.NODE_ENV);
+Promise.reject("a_reject");
 throw new Error("an_err"); //demo for logger
 
 //the service:
