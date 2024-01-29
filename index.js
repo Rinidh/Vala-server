@@ -5,7 +5,8 @@ require("dotenv").config(); //loads the .env file
 const app = express();
 
 // startup loading of required features
-const { logger } = require("./startup/logger");
+require("./startup/error-catchers")();
+const logger = require("./startup/logger");
 require("./startup/db")();
 require("./startup/joi")();
 require("./startup/routes")(app);

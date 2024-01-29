@@ -2,7 +2,7 @@
 //this module was replaced by built in exception-handler and logger of winston
 //
 
-const { logger } = require("./logger");
+const logger = require("./logger");
 
 module.exports = function () {
   //TO CATCH ANY ERRORS DURING EXECUTION (AFTER THIS FILE IS LOADED IN INDEX.JS)
