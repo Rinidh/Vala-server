@@ -8,15 +8,11 @@ const app = express();
 const { logger } = require("./startup/logger");
 require("./startup/db")();
 require("./startup/joi")();
-require("./startup/routes");
+require("./startup/routes")(app);
 require("./startup/prod")(app);
 
-console.log(process.env.NODE_ENV);
-Promise.reject("a_reject");
-throw new Error("an_err"); //demo for logger
-
 //the service:
-// const port = process.env.PORT || 3000;
-// app.listen(port, () =>
-//   logger.info(`Listening on port ${port}`, { someMeta: "someMeta..." })
-// );
+const port = process.env.PORT || 3000;
+app.listen(port, () =>
+  logger.info(`Listening on port ${port}`, { someMeta: "someMeta..." })
+);
