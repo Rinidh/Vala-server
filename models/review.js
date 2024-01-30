@@ -14,6 +14,16 @@ const reviewSchema = new mongoose.Schema({
     maxLength: 1_000,
     required: true,
   },
+  date: {
+    type: Date,
+    default: Date.now,
+    get: function (date) {
+      //define a getter on "date" field to return readable date whenever accessed
+      //in mongodb, prefer storing date as a js Date timestamp
+      const dateOpts = { year: "numeric", month: "long", day: "numeric" };
+      return date.toLocaleDateString(undefined, dateOpts);
+    },
+  },
 });
 
 const Review = mongoose.model("review", reviewSchema);
