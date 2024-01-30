@@ -1,4 +1,9 @@
-separate logger,exceptions.hansdle()
+create auth.js for posting news, posting pdts etc
 
+amazon s3 for file storage
 ---
 add the mongodb api key in production.json
+add the email text box to reviews card with chars-left counter
+how to implement logins using existing google, fb etc accounts
+
+try out cms in other apps
