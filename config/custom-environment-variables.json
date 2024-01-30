@@ -1,3 +1,4 @@
 {
-  "db": "Vala-server_mongodbString"
+  "db": "Vala-server_mongodbString",
+  "jwtPrivateKey": "vala_jwtPrivateKey"
 }

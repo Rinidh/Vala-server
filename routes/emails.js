@@ -1,9 +1,10 @@
 const express = require("express");
 const { Email, validateEmail } = require("../models/email");
+const auth = require("../middleware/authorize");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   res.send(await Email.find());
 });
 

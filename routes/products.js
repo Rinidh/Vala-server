@@ -7,4 +7,6 @@ router.get("/", async (req, res) => {
   res.send(await Product.find());
 });
 
+//add auth when posting/putting products
+
 module.exports = router;
