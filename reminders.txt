@@ -1,6 +1,3 @@
-create auth.js for posting news, posting pdts etc
-  add info to jwt sign obj: isApproved, name, _id
-
 amazon s3 for file storage
 
 one requests for admin, other admins approve
@@ -11,5 +8,6 @@ add category, offer tags to product in client
 add the name text box to reviews input with chars-left counter. Also email input popup if one wants to subscribe
 add the mongodb api key in production.json
 how to implement logins using existing google, fb etc accounts
+clear the logs in files and db before launch
 
 try out cms in other apps

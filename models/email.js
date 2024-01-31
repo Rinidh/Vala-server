@@ -31,4 +31,4 @@ const validateEmail = (emailObj) => {
   return emailSchema.validate(emailObj);
 };
 
-module.exports = { validateEmail, Email };
+module.exports = { validateEmail, Email, emailRegex };

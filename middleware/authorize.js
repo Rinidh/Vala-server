@@ -9,8 +9,8 @@ function authorize(req, res, next) {
   try {
     const adminObj = jwt.verify(token, config.get("jwtPrivateKey"));
 
-    if (adminObj.isApproved)
-      return res.status(401).send("You are not yet authorized...");
+    if (!adminObj.isApproved)
+      return res.status(401).send("You are not yet approved...");
 
     req.adminObj = adminObj;
     next();

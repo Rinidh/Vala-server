@@ -17,6 +17,10 @@ const News = mongoose.model(
       required: true,
     },
     imageUrl: String,
+    date: {
+      type: Date,
+      default: Date.now,
+    },
   })
 );
 
