@@ -1,6 +1,11 @@
+incase valdation fails  at client and 400 returned back, show err.response.data in model
+
 amazon s3 for file storage
 
 one requests for admin, other admins approve
+  logout
+  login - use /api/auth
+  del account
 
 un md5 if not needed
 ---
@@ -9,5 +14,6 @@ add the name text box to reviews input with chars-left counter. Also email input
 add the mongodb api key in production.json
 how to implement logins using existing google, fb etc accounts
 clear the logs in files and db before launch
+add .d.ts to vala-server and vala-client
 
 try out cms in other apps
