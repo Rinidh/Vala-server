@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 require("express-async-errors"); //just need to require this module and it works. For this to work, you must have defined the app.use(error)
 require("dotenv").config(); //loads the .env file
 
 const app = express();
 
 app.use(cors()); //for dev only; assign exact domains to allow in prod
+app.use(cookieParser()); //extracts cookies in requests into an accessible object and attaches it to req body
 
 // startup loading of required features
 require("./startup/error-catchers")();

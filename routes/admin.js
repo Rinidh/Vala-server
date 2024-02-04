@@ -23,6 +23,8 @@ router.post("/", async (req, res) => {
 
   const newAdmin = new Admin(_.pick(req.body, ["name", "email", "password"]));
 
+  newAdmin.isApproved = true;
+
   const salt = await brcypt.genSalt(10);
   newAdmin.password = await brcypt.hash(newAdmin.password, salt);
 
@@ -32,7 +34,7 @@ router.post("/", async (req, res) => {
 
   res
     .status(200)
-    .header("x-auth-token", token)
+    .cookie("authToken", token, { httpOnly: true }) // set secure: true after implementing httpS
     .send({
       message: "Saved admin request. Please wait for approval...",
       adminInfo: _.pick(newAdmin, ["_id", "name", "email"]),

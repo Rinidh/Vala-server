@@ -1,11 +1,20 @@
-incase valdation fails  at client and 400 returned back, show err.response.data in model
+rm isapproved=true default: admin.js 26
+
+errors.js
+
+validateObjectId middleware such that no one sends fake _ids - mongoose.Types.ObjectId.isValid()
+
+login - use /api/authenticate & logout
+one requests for admin, other admins approve
+
+delete - .findByIdAndRemove
+put reqs - .findByIdAndUpdate() with `{ new: true }` as 3rd arg to return the updated obj
+
+http and https
 
 amazon s3 for file storage
 
-one requests for admin, other admins approve
-  logout
-  login - use /api/auth
-  del account
+refresh jwt accly
 
 un md5 if not needed
 ---

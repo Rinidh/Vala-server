@@ -3,7 +3,7 @@ const logger = require("../startup/logger");
 const jwt = require("jsonwebtoken");
 
 function authorize(req, res, next) {
-  const token = req.header("x-auth-token");
+  const token = req.cookies.authToken; //extract the jwt token
   if (!token) return res.status(400).send("No token provided...");
 
   try {
