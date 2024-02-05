@@ -6,7 +6,12 @@ require("dotenv").config(); //loads the .env file
 
 const app = express();
 
-app.use(cors()); //for dev only; assign exact domains to allow in prod
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+); //for dev only; assign exact domains to allow in prod
 app.use(cookieParser()); //extracts cookies in requests into an accessible object and attaches it to req body
 
 // startup loading of required features

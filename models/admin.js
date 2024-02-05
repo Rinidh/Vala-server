@@ -11,6 +11,7 @@ const adminSchema = new mongoose.Schema({
     maxLength: 50,
     required: true,
     trim: true,
+    match: /^[^@]+$/, //name shouldn't contain "@" as it would cause issues when logging-in (at /admin/login)
   },
   password: {
     type: String,
@@ -19,7 +20,7 @@ const adminSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
     unique: true,
     lowerCase: true,
@@ -53,7 +54,11 @@ const Admin = mongoose.model("admin", adminSchema);
 
 const validateAdmin = (adminObj) => {
   const schema = Joi.object({
-    name: Joi.string().max(50).min(1).required(),
+    name: Joi.string()
+      .regex(/^[^@]+$/)
+      .max(50)
+      .min(1)
+      .required(),
     password: Joi.string().max(50).min(3).required(),
     email: Joi.string()
       .regex(emailRegex)

@@ -34,7 +34,10 @@ router.post("/", async (req, res) => {
 
   res
     .status(200)
-    .cookie("authToken", token, { httpOnly: true }) // set secure: true after implementing httpS
+    .cookie("authToken", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 10,
+    }) // set secure: true after implementing httpS
     .send({
       message: "Saved admin request. Please wait for approval...",
       adminInfo: _.pick(newAdmin, ["_id", "name", "email"]),
