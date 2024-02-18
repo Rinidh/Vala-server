@@ -1,7 +1,5 @@
 rm isapproved=true default: admin.js 26
 
-errors.js
-
 validateObjectId middleware such that no one sends fake _ids - mongoose.Types.ObjectId.isValid()
 
 login - use /api/authenticate & logout
@@ -10,19 +8,19 @@ one requests for admin, other admins approve
 delete - .findByIdAndRemove
 put reqs - .findByIdAndUpdate() with `{ new: true }` as 3rd arg to return the updated obj
 
+add category: offer tags to product
+
 http and https
 
 amazon s3 for file storage
 
 refresh jwt accly
 
-un md5 if not needed
+add .d.ts or docstrings where needed
+
+npm un md5 if not needed
 ---
-add category, offer tags to product in client
-add the name text box to reviews input with chars-left counter. Also email input popup if one wants to subscribe
 add the mongodb api key in production.json
 how to implement logins using existing google, fb etc accounts
-clear the logs in files and db before launch
-add .d.ts to vala-server and vala-client
 
 try out cms in other apps

@@ -1,11 +1,12 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
+const { emailSchema, emailRegex } = require("./email");
 
 const reviewSchema = new mongoose.Schema({
   name: {
     type: String,
-    minLength: 3,
-    maxLength: 10,
+    minLength: 1,
+    maxLength: 50,
     required: true,
   },
   review: {
@@ -14,6 +15,7 @@ const reviewSchema = new mongoose.Schema({
     maxLength: 1_000,
     required: true,
   },
+  email: emailSchema,
   date: {
     type: Date,
     default: Date.now,
@@ -30,8 +32,14 @@ const Review = mongoose.model("review", reviewSchema);
 
 const validateReview = (productObj) => {
   const schema = Joi.object({
-    name: Joi.string().max(10).min(3).required(),
+    name: Joi.string().max(50).min(1).required(),
     review: Joi.string().max(1000).min(1).required(),
+    email: Joi.string()
+      .regex(emailRegex)
+      .required()
+      .trim()
+      .lowercase()
+      .label("Email"),
   });
 
   return schema.validate(productObj);

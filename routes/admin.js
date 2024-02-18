@@ -7,13 +7,20 @@ const auth = require("../middleware/authorize");
 const router = express.Router();
 
 router.get("/", auth, async (req, res) => {
+  if (req.query.isApproved === "true") {
+    const approvedAdmins = await Admin.find({ isApproved: true });
+    res.send(_.pick(approvedAdmins, ["_id", "name", "email"]));
+  }
+
   res.send(await Admin.find());
 });
 
 router.post("/", async (req, res) => {
   const { error } = validateAdmin(req.body);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res
+      .status(400)
+      .send(`Validation failed at server:, ${error.details[0].message}`);
   }
 
   if (await Admin.findOne({ email: req.body.email }))
@@ -39,7 +46,7 @@ router.post("/", async (req, res) => {
       maxAge: 1000 * 60 * 60 * 24 * 10,
     }) // set secure: true after implementing httpS
     .send({
-      message: "Saved admin request. Please wait for approval...",
+      message: "Saved admin request...",
       adminInfo: _.pick(newAdmin, ["_id", "name", "email"]),
     });
 });

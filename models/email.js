@@ -5,20 +5,19 @@ const { default: mongoose } = require("mongoose");
 const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-const Email = mongoose.model(
-  "email",
-  new mongoose.Schema({
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-      lowerCase: true,
-      match: emailRegex,
-      //index: true, //not needed unless this was a 'user' doc
-    },
-  })
-);
+const emailSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true,
+    lowerCase: true,
+    match: emailRegex,
+    //index: true, //not needed unless this was a 'user' doc
+  },
+});
+
+const Email = mongoose.model("email", emailSchema);
 
 const validateEmail = (emailObj) => {
   const emailSchema = Joi.string()
@@ -31,4 +30,4 @@ const validateEmail = (emailObj) => {
   return emailSchema.validate(emailObj);
 };
 
-module.exports = { validateEmail, Email, emailRegex };
+module.exports = { validateEmail, Email, emailRegex, emailSchema };
