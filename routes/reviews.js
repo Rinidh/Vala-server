@@ -19,11 +19,11 @@ router.post("/", async (req, res) => {
   const newReview = new Review({
     name: req.body.name,
     review: req.body.review,
-    email: { email: req.body.email },
+    email: { emailId: req.body.email },
   });
   await newReview.save();
 
-  const newEmail = new Email({ email: req.body.email });
+  const newEmail = new Email({ emailId: req.body.email });
   await newEmail.save();
 
   res.status(200).send("Saved the review...");

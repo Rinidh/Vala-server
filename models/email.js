@@ -6,7 +6,7 @@ const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 const emailSchema = new mongoose.Schema({
-  email: {
+  emailId: {
     type: String,
     required: true,
     trim: true,
@@ -14,6 +14,14 @@ const emailSchema = new mongoose.Schema({
     lowerCase: true,
     match: emailRegex,
     //index: true, //not needed unless this was a 'user' doc
+  },
+  dateRecorded: {
+    type: Date,
+    default: Date.now,
+    get: function (date) {
+      const dateOpts = { year: "numeric", month: "long", day: "numeric" };
+      return date.toLocaleDateString(undefined, dateOpts);
+    },
   },
 });
 

@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
       .send(`Validation failed at server:, ${error.details[0].message}`);
   }
 
-  if (await Admin.findOne({ email: req.body.email }))
+  if (await Admin.findOne({ "email.emailId": req.body.email }))
     return res
       .status(400)
       .send(`Admin with email ${req.body.email} already exists...`);

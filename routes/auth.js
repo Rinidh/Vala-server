@@ -21,7 +21,7 @@ router.post("/login", async (req, res) => {
   let admin;
   //req.body.name_or_email may contain an email or a name
   if (req.body.name_or_email.includes("@")) {
-    admin = await Admin.findOne({ email: req.body.name_or_email });
+    admin = await Admin.findOne({ "email.emailId": req.body.name_or_email });
   } else {
     admin = await Admin.findOne({ name: req.body.name_or_email });
   }

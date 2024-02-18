@@ -1,6 +1,6 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
-const { emailRegex } = require("./email");
+const { emailRegex, emailSchema } = require("./email");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
@@ -18,14 +18,7 @@ const adminSchema = new mongoose.Schema({
     minLength: 3,
     required: true,
   },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true,
-    lowerCase: true,
-    match: emailRegex,
-  },
+  email: emailSchema,
   dateWhenAdmin: {
     type: Date,
     default: Date.now,
