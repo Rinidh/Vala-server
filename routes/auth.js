@@ -3,11 +3,12 @@ const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const authorize = require("../middleware/authorize");
 const { Admin } = require("../models/admin");
+const validateObjectId = require("../middleware/validateObjectId");
 
 const router = require("express").Router();
 
 //runs when default logging in; done automatically when accessing the Admin page
-router.post("/", authorize, async (req, res) => {
+router.post("/", [authorize, validateObjectId], async (req, res) => {
   const admin = await Admin.findById(req.adminObj._id);
 
   res.status(200).send(_.pick(admin, ["name", "email", "_id"]));

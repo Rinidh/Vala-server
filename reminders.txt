@@ -1,6 +1,6 @@
 rm isapproved=true default: admin.js 26
 
-validateObjectId middleware such that no one sends fake _ids - mongoose.Types.ObjectId.isValid()
+FIRST WRITE TESTS
 
 login - use /api/authenticate & logout
 one requests for admin, other admins approve
