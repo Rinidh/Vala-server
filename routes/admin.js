@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/", auth, async (req, res) => {
   if (req.query.isApproved === "true") {
     const approvedAdmins = await Admin.find({ isApproved: true });
-    res.send(_.pick(approvedAdmins, ["_id", "name", "email"]));
+    res.send(_.pick(approvedAdmins, ["_id", "name", "emailId"]));
   }
 
   res.send(await Admin.find());
@@ -23,14 +23,14 @@ router.post("/", async (req, res) => {
       .send(`Validation failed at server:, ${error.details[0].message}`);
   }
 
-  if (await Admin.findOne({ "email.emailId": req.body.email }))
+  if (await Admin.findOne({ "email.emailId": req.body.emailId }))
     return res
       .status(400)
-      .send(`Admin with email ${req.body.email} already exists...`);
+      .send(`Admin with email ${req.body.emailId} already exists...`);
 
-  const newAdmin = new Admin(_.pick(req.body, ["name", "email", "password"]));
+  const newAdmin = new Admin(_.pick(req.body, ["name", "emailId", "password"]));
 
-  newAdmin.isApproved = true;
+  newAdmin.isApproved = true; ///
 
   const salt = await brcypt.genSalt(10);
   newAdmin.password = await brcypt.hash(newAdmin.password, salt);
@@ -45,10 +45,7 @@ router.post("/", async (req, res) => {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 10,
     }) // set secure: true after implementing httpS
-    .send({
-      message: "Saved admin request...",
-      adminInfo: _.pick(newAdmin, ["_id", "name", "email"]),
-    });
+    .send("Saved admin request...");
 });
 
 module.exports = router;

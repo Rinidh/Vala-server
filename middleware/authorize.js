@@ -15,7 +15,7 @@ function authorize(req, res, next) {
     req.adminObj = adminObj;
     next();
   } catch (error) {
-    logger.error("Login failed (invalid token)", error);
+    logger.error("Authorization failed (invalid token)", error);
     res.status(401).send("Invalid token...");
   }
 }

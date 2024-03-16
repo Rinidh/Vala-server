@@ -7,11 +7,13 @@ const validateObjectId = require("../middleware/validateObjectId");
 
 const router = require("express").Router();
 
+//apart from POSTs to this auth, all other post reqs eg in admin, news... respond back with a string
+
 //runs when default logging in; done automatically when accessing the Admin page
-router.post("/", [authorize, validateObjectId], async (req, res) => {
+router.post("/", authorize, async (req, res) => {
   const admin = await Admin.findById(req.adminObj._id);
 
-  res.status(200).send(_.pick(admin, ["name", "email", "_id"]));
+  res.status(200).send(_.pick(admin, ["name", "emailId", "_id"]));
 });
 
 //is accessed on manual logging in
@@ -21,10 +23,10 @@ router.post("/login", async (req, res) => {
 
   let admin;
   //req.body.name_or_email may contain an email or a name
-  if (req.body.name_or_email.includes("@")) {
-    admin = await Admin.findOne({ "email.emailId": req.body.name_or_email });
+  if (req.body.name_or_emailId.includes("@")) {
+    admin = await Admin.findOne({ "email.emailId": req.body.name_or_emailId });
   } else {
-    admin = await Admin.findOne({ name: req.body.name_or_email });
+    admin = await Admin.findOne({ name: req.body.name_or_emailId });
   }
 
   if (!admin) return res.status(400).send("Invalid name or password...");
@@ -36,7 +38,7 @@ router.post("/login", async (req, res) => {
 
   res
     .status(200)
-    .send(_.pick(admin, ["name", "email", "_id"]))
+    .send(_.pick(admin, ["name", "emailId", "_id"]))
     .cookie("authToken", token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 10,
@@ -47,7 +49,7 @@ module.exports = router;
 
 const validateLogin = (loginObj) => {
   const schema = Joi.object({
-    name_or_email: Joi.string().max(50).required(),
+    name_or_emailId: Joi.string().max(50).required(),
     password: Joi.string().min(3).max(50).required(),
   });
 

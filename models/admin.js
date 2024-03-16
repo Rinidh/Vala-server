@@ -53,7 +53,7 @@ const validateAdmin = (adminObj) => {
       .min(1)
       .required(),
     password: Joi.string().max(50).min(3).required(),
-    email: Joi.string()
+    emailId: Joi.string() //for consistency as all email-storing-props in all docs are called 'emailId'
       .regex(emailRegex)
       .required()
       .trim()
