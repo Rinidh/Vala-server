@@ -4,8 +4,10 @@ const { Admin } = require("../../../models/admin");
 
 describe("authorization middleware", () => {
   it("should add the user object to req on valid jwt", () => {
+    const id = new mongoose.Types.ObjectId().toHexString();
+
     const admin = new Admin({
-      _id: new mongoose.Types.ObjectId().toHexString(),
+      _id: id,
       name: "demoAdmin",
       isApproved: true,
       dateWhenAdmin: new Date("2001-01-01"),
@@ -27,7 +29,7 @@ describe("authorization middleware", () => {
     //     isApproved: true,
     //   })
     // );
-    expect(req.adminObj).toHaveProperty("_id"); //didn't to put the value arg here coz test fails
+    expect(req.adminObj).toHaveProperty("_id", id); //works if objectId is extracted into its own var, referenced here. Doesn't work if .toHaveProperty("_id", admin._id)
     expect(req.adminObj).toHaveProperty("name", admin.name);
     expect(req.adminObj).toHaveProperty("isApproved", admin.isApproved);
   });

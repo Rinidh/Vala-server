@@ -23,7 +23,7 @@ module.exports = function () {
           filename: "ex-rej.log",
         }),
       ];
-    } else if (process.env.NODE_ENV === "development") {
+    } else {
       return [new transports.Console({ format: format.colorize() })]; //colorize not working for built in exceptions-logger
     }
   };
