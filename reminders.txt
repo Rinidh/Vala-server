@@ -1,6 +1,11 @@
 rm isapproved=true default: admin.js 26
+----
 
-FIRST WRITE TESTS
+unit test authorize.test.js - 2nd test failing
+
+int test of authorize including a scenario where you don't send a cookie token, invalid toeken etc (learn to alter cookie)
+
+caching code / assets to prevent re-fetch on page reload
 
 login - use /api/authenticate & logout
 one requests for admin, other admins approve
@@ -22,5 +27,8 @@ npm un md5 if not needed
 ---
 add the mongodb api key in production.json
 how to implement logins using existing google, fb etc accounts
+problem in winston-mongodb's dependency: bl and readable-stream causing type error: "var isDuplex = stream instanceof Duplex; TypeError: Right-hand side of 'instanceof' is not callable"
+
 
 try out cms in other apps
+
