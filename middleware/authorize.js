@@ -9,11 +9,12 @@ function authorize(req, res, next) {
   try {
     const adminObj = jwt.verify(token, config.get("jwtPrivateKey"));
 
-    if (!adminObj.isApproved)
+    if (!adminObj.isApproved) {
       return res.status(401).send("You are not yet approved...");
-
-    req.adminObj = adminObj;
-    next();
+    } else {
+      req.adminObj = adminObj;
+      next();
+    }
   } catch (error) {
     logger.error("Authorization failed (invalid token)", error);
     res.status(401).send("Invalid token...");
