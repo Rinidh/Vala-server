@@ -1,9 +1,11 @@
 rm isapproved=true default: admin.js 26
 ----
 
-unit test authorize.test.js - 2nd test failing
+unit test authorize.test.js - complete all
+  have to import the logger for 2nd test
+    see the gemini answer about creating mock files
 
-int test of authorize including a scenario where you don't send a cookie token, invalid toeken etc (learn to alter cookie)
+learn to alter httponly cookie in testing
 
 caching code / assets to prevent re-fetch on page reload
 

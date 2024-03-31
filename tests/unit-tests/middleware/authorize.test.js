@@ -2,9 +2,7 @@ const authorize = require("../../../middleware/authorize");
 const jwt = require("jsonwebtoken");
 const { Admin } = require("../../../models/admin");
 
-jest.mock("../../../startup/logger", () => {
-  error: jest.fn();
-});
+jest.mock("../../../startup/logger"); //turned into a manual mock by removing the callback
 jest.mock("jsonwebtoken", () => {
   const originalModule = jest.requireActual("jsonwebtoken");
 
@@ -15,13 +13,26 @@ jest.mock("jsonwebtoken", () => {
 });
 
 describe("authorize (unit test)", () => {
-  it("should return status 400 if no token sent", () => {
-    const req = { cookies: "" };
-    const res = {
+  let req;
+  let res;
+  let next;
+  const admin = new Admin({
+    name: "test",
+    isApproved: true,
+  });
+
+  beforeEach(() => {
+    //Similar to Mr Mosh's tecnique of clean testing, where you first define the all-okay path, and change variables accordingly in each test to generate & test errors
+    req = { cookies: { authToken: admin.generateAuthToken() } };
+    res = {
       status: jest.fn((code) => res), //retuning the same 'res' object due to chaining of meths used in authorize.js ie res.status().send()
       send: jest.fn((message) => res),
     };
-    const next = jest.fn();
+    next = jest.fn();
+  });
+
+  it("should return status 400 if no token sent", () => {
+    req = { cookies: { authToken: "" } };
 
     authorize(req, res, next);
 
@@ -30,21 +41,25 @@ describe("authorize (unit test)", () => {
     expect(next).not.toHaveBeenCalled();
   });
 
-  it("should add the adminObj to res if valid token and if admin isApproved", () => {
+  it("should return status 401 if invalid token", () => {
     //this is a unit test so i mocked the jwt library to prevent jwt.verify() from actually running
-    const admin = new Admin({
-      name: "test",
-      isApproved: true,
+    jwt.verify.mockImplementationOnce(() => {
+      throw new Error();
     });
-    const token = admin.generateAuthToken();
-    jwt.verify.mockReturnValue(admin);
 
-    const req = { cookies: { authToken: token } };
-    const res = {
-      status: jest.fn((code) => res), //retuning the same 'res' object due to chaining of meths used in authorize.js ie res.status().send()
-      send: jest.fn((message) => res),
-    };
-    const next = jest.fn();
+    req = { cookies: { authToken: "invalidToken123" } };
+
+    authorize(req, res, next);
+
+    expect(jwt.verify.mock.results[0].type).toBe("throw");
+    expect(req.adminObj).toBeUndefined();
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.send).toHaveBeenCalledWith("Invalid token...");
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it("should add the adminObj to res if valid token and if admin isApproved", () => {
+    jwt.verify.mockReturnValue(admin);
 
     authorize(req, res, next);
 
