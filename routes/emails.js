@@ -9,12 +9,15 @@ router.get("/", auth, async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { error } = validateEmail(req.body.email);
+  const { error } = validateEmail(req.body.emailId);
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
 
-  const newEmail = new Email({ emailId: req.body.email });
+  const emailExists = await Email.findOne({ emailId: req.body.emailId }); //better to use findOne instead of find() as latter returns an array always truthy
+  if (emailExists) return res.status(400).send("Email already exists...");
+
+  const newEmail = new Email({ emailId: req.body.emailId });
   await newEmail.save();
 
   res.status(200).send("Saved the email id...");

@@ -27,15 +27,15 @@ const emailSchema = new mongoose.Schema({
 
 const Email = mongoose.model("email", emailSchema);
 
-const validateEmail = (emailObj) => {
+const validateEmail = (emailString) => {
   const emailSchema = Joi.string()
     .regex(emailRegex)
     .required()
     .trim()
     .lowercase()
-    .label("Email"); // For nicer error messages
+    .label("Invalid Email: "); // For nicer error messages
 
-  return emailSchema.validate(emailObj);
+  return emailSchema.validate(emailString);
 };
 
 module.exports = { validateEmail, Email, emailRegex, emailSchema };

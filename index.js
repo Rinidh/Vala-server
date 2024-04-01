@@ -24,8 +24,12 @@ require("./startup/prod")(app);
 
 //the service
 const port = process.env.PORT || 3000;
-app.listen(port, () =>
-  logger.info(`Listening on port ${port}`, { someMeta: "someMeta..." })
-);
+
+if (process.env.NODE_ENV !== "test") {
+  //avoid starting the server during tests. We just export the 'app' to be used by supertest in test files to start its own server
+  app.listen(port, () =>
+    logger.info(`Listening on port ${port}`, { someMeta: "someMeta..." })
+  );
+}
 
 module.exports = app;
