@@ -18,10 +18,10 @@ module.exports = function (err, req, res, next) {
       logger.error("MongooseError! - ", err);
       res.status(500).send("Oops! Something went wrong at server...");
       break;
-    case err:
+    default:
       logger.error(err.message, err);
       res.status(500).send("Oops! Something went wrong at server...");
-      break;
+    //no need of break; stmt for last case
 
     //add more error handling
   }

@@ -7,8 +7,8 @@ describe("validateObjectId", () => {
       body: { _id: "1234" },
     };
     const res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
+      status: jest.fn().mockReturnThis(), //or jest.fn(()=>res) to enable chaining ie res.status().send()
+      send: jest.fn().mockReturnThis(),
     };
     const next = jest.fn();
 
@@ -24,7 +24,8 @@ describe("validateObjectId", () => {
       body: { _id: new mongoose.Types.ObjectId().toHexString() },
     };
     const res = {};
-    const next = jest.fn(); //avoid repetition and use mr mosh's tehnique
+    const next = jest.fn();
+    //avoid repetition of above and use mr mosh's tehnique
 
     validateObjectId(req, res, next);
 
