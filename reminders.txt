@@ -1,9 +1,7 @@
 rm isapproved=true default: admin.js 26
 ----
 
-unit test authorize.test.js - complete all
-  have to import the logger for 2nd test
-    see the gemini answer about creating mock files
+complete all tests
 
 learn to alter httponly cookie in testing
 
