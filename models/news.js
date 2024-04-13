@@ -34,4 +34,14 @@ const validateNews = (newsObj) => {
   return schema.validate(newsObj);
 };
 
-module.exports = { validateNews, News };
+const validateNewsPatchReq = (newsObj) => {
+  const schema = Joi.object({
+    heading: Joi.string().min(1).max(20),
+    info: Joi.string().min(5).max(1000),
+    imageUrl: Joi.string(),
+  });
+
+  return schema.validate(newsObj);
+};
+
+module.exports = { validateNews, News, validateNewsPatchReq };

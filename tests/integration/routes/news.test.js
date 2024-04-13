@@ -1,5 +1,6 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
+const { ObjectId } = require("mongodb");
 const app = require("../../../index");
 const { Admin } = require("../../../models/admin");
 const { News } = require("../../../models/news");
@@ -59,15 +60,60 @@ describe("POST /", () => {
   });
 
   it("should save the news if valid information", async () => {
-    console.log(news);
     const res = await execute();
-    console.log(res.error.text);
 
     const newsThatGotStored = await News.findOne();
 
     expect(res.status).toBe(200);
     expect(res.text).toMatch(/Saved the news post.../);
     expect(newsThatGotStored).toMatchObject(news);
+  });
+});
+
+describe("PATCH /", () => {
+  let updatedNews;
+  let savedNews;
+  let idOfSavedNews;
+
+  beforeAll(async () => {
+    savedNews = await new News(newsObj).save();
+    console.log("saved: ", savedNews._id);
+  });
+  beforeEach(() => {
+    updatedNews = { ...newsObj, heading: "updated heading" };
+    idOfSavedNews = savedNews._id.toString(); //such that if in a particular test the id is changed to mock an invalid id, in next test it is returned back to a valid one
+  });
+  afterAll(async () => await News.deleteMany({}));
+
+  const execute = () =>
+    agent.patch(`/api/news/${idOfSavedNews}`).send(updatedNews);
+
+  it("should return 400 if invalid info sent", async () => {
+    updatedNews = { heading: "1234567890_1234567890_too_long" };
+
+    const res = await execute();
+
+    expect(res.status).toBe(400);
+    expect(res.text).toMatch(new RegExp("Validation failed at server"));
+  });
+
+  it("should return 404 if wrong id passed in url param", async () => {
+    idOfSavedNews = new mongoose.Types.ObjectId().toHexString();
+
+    const res = await execute();
+
+    expect(res.status).toBe(404);
+    expect(res.text).toMatch(/No news document found with given id.../);
+  });
+
+  it("should return the modified news document", async () => {
+    const res = await execute();
+
+    const newsDocinDB = await News.findOne();
+
+    expect(res.status).toBe(200);
+    expect(res._body).toMatchObject(updatedNews);
+    expect(newsDocinDB).toMatchObject(updatedNews);
   });
 });
 

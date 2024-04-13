@@ -11,7 +11,9 @@ router.get("/", auth, async (req, res) => {
 router.post("/", async (req, res) => {
   const { error } = validateEmail(req.body.emailId);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res
+      .status(400)
+      .send(`Validation failed at server:, ${error.details[0].message}`);
   }
 
   const emailExists = await Email.findOne({ emailId: req.body.emailId }); //better to use findOne instead of find() as latter returns an array always truthy
