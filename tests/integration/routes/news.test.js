@@ -1,6 +1,5 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
 const app = require("../../../index");
 const { Admin } = require("../../../models/admin");
 const { News } = require("../../../models/news");
@@ -77,7 +76,6 @@ describe("PATCH /", () => {
 
   beforeAll(async () => {
     savedNews = await new News(newsObj).save();
-    console.log("saved: ", savedNews._id);
   });
   beforeEach(() => {
     updatedNews = { ...newsObj, heading: "updated heading" };

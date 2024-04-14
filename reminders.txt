@@ -2,6 +2,7 @@ rm isapproved=true default: admin.js 26
 ----
 
 complete all tests
+  the post /admin handler is not checking for duplicate admins well. Write tests for admin
 
 learn to alter httponly cookie in testing
 

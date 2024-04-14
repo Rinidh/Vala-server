@@ -13,17 +13,17 @@ router.post("/", async (req, res) => {
   if (error) {
     return res
       .status(400)
-      .send(`Bad review post... ${error.details[0].message}`);
+      .send(`Validation failed at server:, ${error.details[0].message}`);
   }
 
   const newReview = new Review({
     name: req.body.name,
     review: req.body.review,
-    email: { emailId: req.body.email },
+    email: { emailId: req.body.emailId },
   });
   await newReview.save();
 
-  const newEmail = new Email({ emailId: req.body.email });
+  const newEmail = new Email({ emailId: req.body.emailId });
   await newEmail.save();
 
   res.status(200).send("Saved the review...");

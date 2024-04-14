@@ -28,7 +28,10 @@ router.post("/", async (req, res) => {
       .status(400)
       .send(`Admin with email ${req.body.emailId} already exists...`);
 
-  const newAdmin = new Admin(_.pick(req.body, ["name", "emailId", "password"]));
+  const newAdmin = new Admin({
+    email: { emailId: req.body.emailId },
+    ..._.pick(req.body, ["name", "password"]),
+  });
 
   newAdmin.isApproved = true; ///
 

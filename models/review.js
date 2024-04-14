@@ -34,7 +34,7 @@ const validateReview = (productObj) => {
   const schema = Joi.object({
     name: Joi.string().max(50).min(1).required(),
     review: Joi.string().max(1000).min(1).required(),
-    email: Joi.string()
+    emailId: Joi.string()
       .regex(emailRegex)
       .required()
       .trim()
