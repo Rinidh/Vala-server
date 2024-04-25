@@ -1,8 +1,17 @@
-rm isapproved=true default: admin.js 26
+implement a way to always keep an approved admin at db which u can use
 ----
 
-complete all tests
+complete all tests for admin hence complete all routes' tests
+  Make a new module with an agent that's APPROVED (you may directly accessing the db not via route handlers). Replace agentWithCookie with this acc.ly in all tests
+  Delete the default approving of any admin created
   the post /admin handler is not checking for duplicate admins well. Write tests for admin
+  write tests for models and DONE!
+
+store the admin signup form data as cookie / local storage in Vala-client
+  When user revisits, the default login is always sent with cookie to vala-server (with info that he's still unapproved) hence 
+  add a checker in authorize.js to compare the admin with given _id to that in db to see if he has got approved
+    Add a refresh button in vala-client that re-sends the default login to check in db if user was approved 
+  Let the user re-login at vala-client if he's approved as per the db, hence the manual login route handler will create a new token where he's shown as approved
 
 learn to alter httponly cookie in testing
 

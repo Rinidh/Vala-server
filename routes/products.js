@@ -64,7 +64,7 @@ router.put("/:id", authorize, async (req, res) => {
   res.send(updatedProduct); //as per the http convention to send back the updated resource
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", authorize, async (req, res) => {
   const { error } = validateProductPatchReq(req.body);
   if (error)
     res

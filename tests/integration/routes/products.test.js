@@ -3,6 +3,7 @@ const app = require("../../../index");
 const mongoose = require("mongoose");
 const { Product } = require("../../../models/product");
 const { Admin } = require("../../../models/admin");
+const agentWithApprovedCookie = require("./agentWithApprovedCookie.test");
 
 jest.mock("../../../startup/logger"); //being used at index.js
 
@@ -17,18 +18,9 @@ const productObj = {
 };
 Object.freeze(productObj); //to prevent accidental modification
 
-const agent = request.agent(app); //supertest starts the server for you
-const anAdmin = {
-  name: "test",
-  password: "test-password",
-  emailId: "test@products",
-};
+let agent;
 
-beforeAll(async () => {
-  const res = await agent.post("/api/admin").send(anAdmin);
-  const cookie = res.headers["set-cookie"][0];
-  agent.jar.setCookie(cookie);
-});
+beforeAll(async () => (agent = await agentWithApprovedCookie));
 
 describe("GET /", () => {
   beforeAll(async () => {
