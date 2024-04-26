@@ -2,7 +2,9 @@ const request = require("supertest");
 const app = require("../../../index");
 const mongoose = require("mongoose");
 const { Review } = require("../../../models/review");
-const { Admin } = require("../models/admin");
+const { Admin } = require("../../../models/admin");
+const { approvedAgent_promise } = require("./agentWithApprovedCookie");
+const { Email } = require("../../../models/email");
 
 jest.mock("../../../startup/logger");
 
@@ -13,20 +15,15 @@ const reviewObj = {
   emailId: "test@reviews",
 };
 
-const agent = request.agent(app);
-const admin = {
-  name: "test",
-  password: "123",
-  emailId: "testAdmin@reviews",
-};
-beforeAll(async () => {
-  const res = await agent.post("/api/admin").send(admin);
-  const cookie = res.headers["set-cookie"][0];
-  agent.jar.setCookie(cookie);
-});
+let agent;
+beforeAll(async () => (agent = await approvedAgent_promise));
 
 describe("GET /", () => {
-  const review = new Review(reviewObj);
+  const review = new Review({
+    name: reviewObj.name,
+    review: reviewObj.review,
+    email: { emailId: reviewObj.emailId },
+  });
   beforeAll(async () => {
     await review.save();
   });
@@ -34,11 +31,16 @@ describe("GET /", () => {
   it("should get all news stored in db", async () => {
     const res = await agent.get("/api/reviews");
 
-    expect(res._body[0]).toMatchObject(reviewObj);
+    expect(res._body[0]).toMatchObject({
+      name: reviewObj.name,
+      review: reviewObj.review,
+      email: { emailId: reviewObj.emailId },
+    });
   });
 
   afterAll(async () => {
     await Review.deleteMany({});
+    await Email.deleteMany({});
   });
 });
 
@@ -53,7 +55,6 @@ describe("POST /", () => {
     review = { name: "" };
 
     const res = await execute();
-    console.log(res._body);
 
     expect(res.status).toBe(400);
     expect(res.error.text).toMatch(new RegExp("Validation failed at server"));
@@ -66,7 +67,12 @@ describe("POST /", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toMatch(/Saved the review.../);
-    expect(reviewInDB).toMatchObject(review);
+    expect(reviewInDB).toMatchObject({
+      //cannot match object of reviewInDB with review (ie reviewObj) because of the different way the email and emailId props are set. Hence I had to explicitly define a new object to compare with as below
+      name: reviewObj.name,
+      review: reviewObj.review,
+      email: { emailId: reviewObj.emailId },
+    });
   });
 });
 

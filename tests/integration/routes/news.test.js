@@ -1,8 +1,7 @@
-const request = require("supertest");
 const mongoose = require("mongoose");
-const app = require("../../../index");
 const { Admin } = require("../../../models/admin");
 const { News } = require("../../../models/news");
+const { approvedAgent_promise } = require("./agentWithApprovedCookie");
 
 jest.mock("../../../startup/logger");
 
@@ -13,17 +12,8 @@ const newsObj = {
   imageUrl: "imgurl_news_test",
 };
 
-const agent = request.agent(app);
-const admin = {
-  name: "test",
-  password: "123",
-  emailId: "test@news",
-};
-beforeAll(async () => {
-  const res = await agent.post("/api/admin").send(admin);
-  const cookie = res.headers["set-cookie"][0];
-  agent.jar.setCookie(cookie);
-});
+let agent;
+beforeAll(async () => (agent = await approvedAgent_promise));
 
 describe("GET /", () => {
   const news = new News(newsObj);

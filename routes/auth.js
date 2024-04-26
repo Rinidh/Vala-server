@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const authorize = require("../middleware/authorize");
 const { Admin } = require("../models/admin");
-const validateObjectId = require("../middleware/validateObjectId");
 
 const router = require("express").Router();
 

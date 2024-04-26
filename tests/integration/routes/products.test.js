@@ -1,9 +1,7 @@
-const request = require("supertest");
-const app = require("../../../index");
 const mongoose = require("mongoose");
 const { Product } = require("../../../models/product");
 const { Admin } = require("../../../models/admin");
-const agentWithApprovedCookie = require("./agentWithApprovedCookie.test");
+const { approvedAgent_promise } = require("./agentWithApprovedCookie");
 
 jest.mock("../../../startup/logger"); //being used at index.js
 
@@ -20,7 +18,7 @@ Object.freeze(productObj); //to prevent accidental modification
 
 let agent;
 
-beforeAll(async () => (agent = await agentWithApprovedCookie));
+beforeAll(async () => (agent = await approvedAgent_promise));
 
 describe("GET /", () => {
   beforeAll(async () => {

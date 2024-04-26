@@ -15,6 +15,8 @@ store the admin signup form data as cookie / local storage in Vala-client
 
 learn to alter httponly cookie in testing
 
+find a way to test for received hex _id string, instead of expect.any(String) 
+
 caching code / assets to prevent re-fetch on page reload
 
 login - use /api/authenticate & logout

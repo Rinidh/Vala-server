@@ -1,13 +1,14 @@
 const request = require("supertest");
+const bcrypt = require("bcrypt");
 const app = require("../../../index");
 const { Admin } = require("../../../models/admin");
 
 const agent = request.agent(app);
 
-const approvedAdminObj = {
+const adminObj = {
   name: "test",
   password: "test-password",
-  email: { emailId: "test@products" },
+  email: { emailId: "test@agentWithAprovedCookie" },
   isApproved: true,
 };
 
@@ -15,7 +16,9 @@ const approvedAgent_promise = new Promise((res, rej) => {
   (async () => {
     try {
       //below is an already approved admin for test purposes. In real, an user gets approval if another approved admin modifies the stored user doc in db. When the user re-logs in MANUALLY in a new browser session, he gets the new token (as cookie) with his isApproved prop as true
-      const approvedAdmin = new Admin(approvedAdminObj);
+      const approvedAdmin = new Admin(adminObj);
+      const salt = await bcrypt.genSalt(10);
+      approvedAdmin.password = await bcrypt.hash(approvedAdmin.password, salt);
       await approvedAdmin.save();
 
       const token_isApprovedTrue = approvedAdmin.generateAuthToken();
@@ -32,4 +35,4 @@ const approvedAgent_promise = new Promise((res, rej) => {
   })();
 });
 
-module.exports = approvedAgent_promise;
+module.exports = { approvedAgent_promise, adminObj };

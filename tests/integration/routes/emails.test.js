@@ -1,23 +1,18 @@
-const request = require("supertest");
-const app = require("../../../index");
 const mongoose = require("mongoose");
 const { Email } = require("../../../models/email");
 const { Admin } = require("../../../models/admin");
+const { approvedAgent_promise } = require("./agentWithApprovedCookie");
 
 jest.mock("../../../startup/logger"); //being used at index.js
 
-const agent = request.agent(app); //supertest starts the server for you
+let agentWithApprovedCookie;
 const anAdmin = {
   name: "test",
   password: "test-password",
   emailId: "test@emails",
 };
 
-beforeAll(async () => {
-  const res = await agent.post("/api/admin").send(anAdmin); //getting a cookie to use and setting it inside the agent
-  const cookie = res.headers["set-cookie"][0];
-  agent.jar.setCookie(cookie);
-});
+beforeAll(async () => (agentWithApprovedCookie = await approvedAgent_promise));
 
 describe("GET /", () => {
   const anEmail = { emailId: "test@emails" };
@@ -31,7 +26,7 @@ describe("GET /", () => {
   });
 
   const execute = () => {
-    return agent.get("/api/emails"); //the http-only cookie is automatically sent
+    return agentWithApprovedCookie.get("/api/emails"); //the http-only cookie is automatically sent
   };
 
   //the case of no token, invalid token... (via cookie) being sent to server is tested at the integration test of authorize
@@ -50,7 +45,9 @@ describe("POST /", () => {
   afterEach(async () => await Email.deleteMany({})); //to clear the db before next test, or else running tests for 2nd time causes errors. Always leave the db clean
 
   const execute = () => {
-    return agent.post("/api/emails").send({ emailId: anEmail });
+    return agentWithApprovedCookie
+      .post("/api/emails")
+      .send({ emailId: anEmail });
   };
 
   it("should return 400 if invalid information posted", async () => {
