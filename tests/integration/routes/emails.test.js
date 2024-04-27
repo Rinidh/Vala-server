@@ -6,11 +6,6 @@ const { approvedAgent_promise } = require("./agentWithApprovedCookie");
 jest.mock("../../../startup/logger"); //being used at index.js
 
 let agentWithApprovedCookie;
-const anAdmin = {
-  name: "test",
-  password: "test-password",
-  emailId: "test@emails",
-};
 
 beforeAll(async () => (agentWithApprovedCookie = await approvedAgent_promise));
 

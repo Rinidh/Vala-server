@@ -10,12 +10,10 @@ const {
 jest.mock("../../../startup/logger"); //logger being executed upon importation of app from index.js
 
 let approvedCookieAgent;
-const agentWithoutCookie = request.agent(app); //for tests that require sending no cookie ie token
+let agentWithoutCookie; //for tests that require sending no cookie ie token
 
 beforeAll(async () => (approvedCookieAgent = await approvedAgent_promise));
-
-//to always keep the agentWithoutCookie without a cookie in subsequent tests
-// beforeEach(() => agentWithoutCookie.jar.clearCookie("authToken")); //.clear() is not a func??
+beforeEach(() => (agentWithoutCookie = request.agent(app)));
 
 describe("Default automatic login", () => {
   it("should return 400 if no token sent", async () => {

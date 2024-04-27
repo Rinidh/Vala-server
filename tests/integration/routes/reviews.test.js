@@ -1,5 +1,3 @@
-const request = require("supertest");
-const app = require("../../../index");
 const mongoose = require("mongoose");
 const { Review } = require("../../../models/review");
 const { Admin } = require("../../../models/admin");
