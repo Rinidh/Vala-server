@@ -16,7 +16,16 @@ const News = mongoose.model(
       maxLength: 1_000,
       required: true,
     },
-    imageUrl: String,
+    imageUrl: {
+      type: String,
+      minLength: 5,
+      validate: {
+        validator: function (imgUrl) {
+          const urlRegex = /^(http|https):\/\/[^\s]+/;
+          return urlRegex.test(imgUrl);
+        },
+      },
+    },
     date: {
       type: Date,
       default: Date.now,
