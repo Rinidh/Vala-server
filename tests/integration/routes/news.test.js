@@ -9,7 +9,7 @@ jest.mock("../../../startup/logger");
 const newsObj = {
   heading: "1", //using min length possible
   info: "12345",
-  imageUrl: "imgurl_news_test",
+  imageUrl: "https://routes-test.com/news",
 };
 
 let agent;

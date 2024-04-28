@@ -5,6 +5,7 @@ const {
   validateNews,
   validateNewsPatchReq,
 } = require("../../../models/news");
+const { dateStringRegex_onlyMonth } = require("../../utils");
 
 jest.mock("../../../startup/logger"); //logger being used at startup/db.js, hence winston-mongodb is invoked, which causes errors
 
@@ -26,7 +27,7 @@ describe("News model", () => {
       const newNews = new News(validNewsData);
 
       expect(newNews).toMatchObject(validNewsData);
-      expect(newNews.date).toBeInstanceOf(Date);
+      expect(newNews.date).toMatch(dateStringRegex_onlyMonth);
     });
 
     it("should save the document in the DB upon calling .save()", async () => {
