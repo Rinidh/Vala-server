@@ -29,6 +29,10 @@ const News = mongoose.model(
     date: {
       type: Date,
       default: Date.now,
+      get: function (date) {
+        const dateOpts = { year: "numeric", month: "long", day: "numeric" };
+        return date.toLocaleDateString(undefined, dateOpts);
+      },
     },
   })
 );
