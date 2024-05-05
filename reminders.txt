@@ -1,8 +1,8 @@
 implement a way to always keep an approved admin at db which u can use
 ----
 
-complete all tests for admin hence complete all routes' tests
-  write tests for models and DONE!
+complete all tests:
+  write tests for startup and DONE!
 
 store the admin signup form data as cookie / local storage in Vala-client
   When user revisits, the default login is always sent with cookie to vala-server (with info that he's still unapproved) hence 

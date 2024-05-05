@@ -18,6 +18,10 @@ module.exports = function (err, req, res, next) {
       logger.error("MongooseError! - ", err);
       res.status(500).send("Oops! Something went wrong at server...");
       break;
+    case err.message === "Configuration property 'db' is not defined":
+      logger.error("Config issue! - ", err);
+      res.status(500).send("Oops! Something went wrong at server...");
+      break;
     default:
       logger.error(err.message, err);
       res.status(500).send("Oops! Something went wrong at server...");
