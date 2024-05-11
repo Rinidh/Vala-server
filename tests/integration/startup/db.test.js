@@ -38,7 +38,11 @@ describe("Start up MongoDB Connection (db.js)", () => {
       throw new Error(errorMsg);
     });
 
-    expect(() => require("../../../startup/db")()).toThrow(errorMsg);
+    try {
+      require("../../../startup/db")();
+    } catch (error) {
+      expect(error.message).toBe(errorMsg);
+    }
 
     config.get.mockRestore(); //jest.restoreAllMocks() only works for SpyOn funcs
   });

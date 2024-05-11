@@ -1,8 +1,5 @@
 implement a way to always keep an approved admin at db which u can use
-----
-
-complete all tests:
-  write tests for startup and DONE!
+---
 
 store the admin signup form data as cookie / local storage in Vala-client
   When user revisits, the default login is always sent with cookie to vala-server (with info that he's still unapproved) hence 
@@ -37,7 +34,11 @@ npm un md5 if not needed
 add the mongodb api key in production.json
 how to implement logins using existing google, fb etc accounts
 problem in winston-mongodb's dependency: bl and readable-stream causing type error: "var isDuplex = stream instanceof Duplex; TypeError: Right-hand side of 'instanceof' is not callable"
+very complicated to write tests for error-catchers.js
+  complete tests for startup/
 
 
 try out cms in other apps
 
+---
+EXTRAS:

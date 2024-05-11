@@ -15,7 +15,7 @@ app.use(
 app.use(cookieParser()); //extracts cookies in requests into an accessible object and attaches it to req body
 
 // startup loading of required features
-require("./startup/error-catchers")();
+require("./startup/error-catchers").initializeErrorCatchers();
 const logger = require("./startup/logger");
 require("./startup/db")();
 require("./startup/joi")();
