@@ -34,9 +34,7 @@ npm un md5 if not needed
 add the mongodb api key in production.json
 how to implement logins using existing google, fb etc accounts
 problem in winston-mongodb's dependency: bl and readable-stream causing type error: "var isDuplex = stream instanceof Duplex; TypeError: Right-hand side of 'instanceof' is not callable"
-very complicated to write tests for error-catchers.js
-  complete tests for startup/
-
+very complicated to write tests for error-catchers.js, logger.js - do later
 
 try out cms in other apps
 
